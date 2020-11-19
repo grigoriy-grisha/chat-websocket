@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="materialize.css">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body class="lighten-4">
+<div class="container">
+    <form>
+        <input type="text" placeholder="ведите сообщение">
+        <button class="btn waves-effect waves-light submit" type="submit" name="action">Submit
+            <i class="material-icons right">send</i>
+        </button>
+        <ul class="messages collection with-header">
+        </ul>
+    </form>
+</div>
+
+
+<script>
+  const submit = document.querySelector(".submit");
+  const messages = document.querySelector(".messages");
+  const input = document.querySelector("input");
+
+
+  const socket = new WebSocket("ws://localhost:5555");
+
+
+
+  submit.addEventListener("click", (e) => {
+    e.preventDefault();
+    socket.send(input.value);
+    input.value = ''
+  });
+  socket.onmessage = function(e) {
+    let message = e.data;
+    const li = `<li class="collection-item">${message}</li>`
+    messages.innerHTML += li
+  };
+</script>
+</body>
+</html>
